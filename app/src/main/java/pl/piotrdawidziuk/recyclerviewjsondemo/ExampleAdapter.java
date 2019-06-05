@@ -6,7 +6,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,8 +18,16 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
 
     private Context mContext;
     private ArrayList<ExampleItem> mExempleList;
+    private OnItemClickListener mListener;
 
 
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        mListener  = onItemClickListener;
+    }
 
 
     public ExampleAdapter(Context mContext, ArrayList<ExampleItem> mExempleList) {
@@ -45,7 +52,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         int likeCount = currentItem.getmLikes();
 
         exampleViewHolder.mTextViewCreator.setText(creatorName);
-        exampleViewHolder.mTextViewLikes.setText("Likes" + likeCount);
+        exampleViewHolder.mTextViewLikes.setText("Likes: " + likeCount);
 
         Picasso.get().load(imageUrl).fit().centerInside().into(exampleViewHolder.mImageView);
 
@@ -73,6 +80,17 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
             mTextViewCreator = itemView.findViewById(R.id.text_view_creator);
             mTextViewLikes = itemView.findViewById(R.id.text_view_likes);
 
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mListener != null){
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION){
+                            mListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
 
         }
     }
