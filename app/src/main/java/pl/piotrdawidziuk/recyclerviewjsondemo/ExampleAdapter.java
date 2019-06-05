@@ -45,7 +45,7 @@ public class ExampleAdapter extends RecyclerView.Adapter<ExampleAdapter.ExampleV
         int likeCount = currentItem.getmLikes();
 
         exampleViewHolder.mTextViewCreator.setText(creatorName);
-        exampleViewHolder.mTextViewLikes.setText(likeCount);
+        exampleViewHolder.mTextViewLikes.setText("Likes" + likeCount);
 
         Picasso.get().load(imageUrl).fit().centerInside().into(exampleViewHolder.mImageView);
 
